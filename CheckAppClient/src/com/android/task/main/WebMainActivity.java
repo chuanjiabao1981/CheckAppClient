@@ -3,6 +3,7 @@ package com.android.task.main;
 import com.android.task.R;
 import com.android.task.R.id;
 import com.android.task.R.layout;
+import com.android.task.main.conf.UrlConfigure;
 import com.android.task.picture.PhotoCapturer;
 import com.android.task.tools.UploadMessage;
 import com.android.task.video.VideoRecorder;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 public class WebMainActivity extends Activity {
 	
 	private WebView mWebView;
+	private UrlConfigure mUrlConf;
 	// set function picker
 	final CharSequence[] func_items = {"≈ƒ’’", "…„œÒ", "»°œ˚"};
 	String myUrl; 
@@ -57,7 +59,7 @@ public class WebMainActivity extends Activity {
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.setWebChromeClient(new MyWebChromeClient(this));
 
-        
+        mUrlConf = new UrlConfigure(this,this.mWebView);
         
         // set button click handler
         TextView menu_text = (TextView)findViewById(R.id.main_menu_text);
@@ -101,6 +103,7 @@ public class WebMainActivity extends Activity {
         config_text.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View arg0) {
+				/*
 				// pop config dialog to set url
 				final View url_setting = getLayoutInflater().inflate(
 						R.layout.url_config_layout, null);
@@ -143,9 +146,8 @@ public class WebMainActivity extends Activity {
 					public void onClick(DialogInterface dialog,
 						int which) {	
 					}
-				});
-				url_config.show();
-
+				});*/
+				mUrlConf.getUrlConfBuilder().show();
 			}
 		});
         
