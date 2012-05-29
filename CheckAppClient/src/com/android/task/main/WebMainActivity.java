@@ -44,9 +44,8 @@ public class WebMainActivity extends Activity {
         setContentView(R.layout.web_main);
         
         // init url
-        myUrl = "http://192.168.1.103:3000/?format=mobile";
-        myUrl = "http://10.32.105.241:3000/?format=mobile";
-        System.err.print(myUrl);
+        myUrl = "http://192.168.1.104:3000/?format=mobile";
+        //myUrl = "http://10.32.105.241:3000/?format=mobile";
         
         mWebView = (WebView) findViewById(R.id.main_webview);
         mWebView.getSettings().setJavaScriptEnabled(true);

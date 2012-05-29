@@ -2,8 +2,8 @@
 <resources>
 
     <string name="hello">Hello World, First_testActivity!</string>
-    <string name="app_name">Observer</string>
-    <string name="author_name">Jie Feng</string>
+    <string name="app_name">云检</string>
+    <string name="author_name">Chuan JiaoBao</string>
     
     <style name="ButtonText">
     <item name="android:layout_width">fill_parent</item>

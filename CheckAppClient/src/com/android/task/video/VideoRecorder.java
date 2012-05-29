@@ -201,6 +201,8 @@ public class VideoRecorder extends Activity
 						camera.release();
 						camera = null;
 					}
+					UploadMessage.set_upload_message(null);
+
 					VideoRecorder.this.finish();
 				}
 		});

@@ -21,10 +21,15 @@ public class MyWebChromeClient extends WebChromeClient{
 	ValueCallback<Uri> mUploadMessage = null;
 	Activity		   mActivity	  = null;	
 	Builder 	   	   mBuilder		  = null;
+	private final String	TAG		  = MyWebChromeClient.class.getName();
+	final CharSequence[] func_items   = {"≈ƒ’’", "…„œÒ", "»°œ˚"};
+	final String         DIALOG_TITLE = "—°‘Òπ¶ƒ‹";
+
 	private void init_dialog()
 	{
+		mBuilder.setTitle(DIALOG_TITLE);
 		mBuilder.setItems(
-		new String[]{"≈ƒ’’"," ”∆µ"}, 
+		func_items, 
 		new OnClickListener()
 		{
 				public void onClick(DialogInterface dialog, int which) 
@@ -42,12 +47,12 @@ public class MyWebChromeClient extends WebChromeClient{
 							break;
 					}
 					if (i == 0){
-						Log.i("aa","≈ƒ’’");
+						Log.i(TAG,"≈ƒ’’");
 						Intent intent = new Intent(MyWebChromeClient.this.mActivity,PhotoCapturer.class);
 						UploadMessage.set_upload_uri(mUploadMessage);
 						MyWebChromeClient.this.mActivity.startActivity(intent);
 					}else if (i == 1){
-						Log.i("aa","…„œÒ");
+						Log.i(TAG,"…„œÒ");
 						Intent intent = new Intent(MyWebChromeClient.this.mActivity, VideoRecorder.class);
 						UploadMessage.set_upload_uri(mUploadMessage);
 						MyWebChromeClient.this.mActivity.startActivity(intent);

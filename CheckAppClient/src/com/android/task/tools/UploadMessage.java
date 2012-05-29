@@ -8,7 +8,7 @@ import android.webkit.ValueCallback;
 
 public class UploadMessage {
 
-	
+	final static String TAG = UploadMessage.class.getName();
 	private static ValueCallback<Uri> mUri = null;
 	
 	public static void set_upload_uri(ValueCallback<Uri> u)
@@ -23,7 +23,7 @@ public class UploadMessage {
 	{
 		if (UploadMessage.get_upload_uri() != null)
 		{
-			Log.i("aa",file_uri.toString());
+			Log.d(TAG,file_uri== null?"null":file_uri.toString());
 			UploadMessage.get_upload_uri().onReceiveValue(file_uri);
 		}
 		UploadMessage.set_upload_uri(null);
