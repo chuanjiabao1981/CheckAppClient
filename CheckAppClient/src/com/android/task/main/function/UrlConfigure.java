@@ -1,14 +1,13 @@
-package com.android.task.main.conf;
+package com.android.task.main.function;
 
 
 import com.android.task.R;
-import com.android.task.main.WebMainActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -19,13 +18,18 @@ public class UrlConfigure {
 	private final String URL_PREFER_ITEM_URL		= "SERVER_URL";
 	private final String URL_PREFER_ITEM_URL_DEFAULT = "www.yunjian.com:3000";
 	private final String URL_TITLE		 = "输入服务器地址";
+	private final String TAG			 = UrlConfigure.class.getName();
 	private Activity mA;
 	private View mUrlSettingView;
 	private WebView mWebView;
 	private SharedPreferences mPreferences;
 	private SharedPreferences.Editor mEditor;
 	private AlertDialog.Builder mUrlConfBuilder;
+	private AlertDialog mUrlDialog;
 	
+	
+	
+
 	
 
 	public UrlConfigure(Activity a,WebView w)
@@ -35,13 +39,14 @@ public class UrlConfigure {
 		this.init();
 	}
 	
-	public AlertDialog.Builder getUrlConfBuilder() 
-	{
-		return mUrlConfBuilder;
+	public AlertDialog getUrlDialog() {
+		return mUrlDialog;
 	}
 	public String getUrl()
 	{
-		return "http://"+this.mPreferences.getString(URL_PREFER_ITEM_URL, URL_PREFER_ITEM_URL_DEFAULT)+"/?format=mobile";
+		String url = "http://"+this.mPreferences.getString(URL_PREFER_ITEM_URL, URL_PREFER_ITEM_URL_DEFAULT)+"/?format=mobile";
+		Log.d(TAG,"get url\t"+url);
+		return url;
 	}
 	
 	private void init()
@@ -65,19 +70,20 @@ public class UrlConfigure {
 				EditText url_edit = (EditText)UrlConfigure.this.mUrlSettingView.findViewById(R.id.url_edit);
 				String myUrl = url_edit.getText().toString();
 				Toast.makeText(UrlConfigure.this.mA, "已经保存服务器地址: "+myUrl, Toast.LENGTH_LONG).show();
-				Toast.makeText(UrlConfigure.this.mA, "正在加载 "+myUrl, Toast.LENGTH_LONG).show();
-				UrlConfigure.this.mEditor.putString("url", myUrl);
+				Toast.makeText(UrlConfigure.this.mA, "正在加载...", Toast.LENGTH_LONG).show();
+				UrlConfigure.this.mEditor.putString(URL_PREFER_ITEM_URL, myUrl);
 				UrlConfigure.this.mEditor.commit();
-				UrlConfigure.this.mWebView.loadUrl(myUrl);
-				
+				Log.d(TAG,"LOAD URL\t"+UrlConfigure.this.getUrl());
+				UrlConfigure.this.mWebView.loadUrl(UrlConfigure.this.getUrl());
 			}
 		});
 		mUrlConfBuilder.setNegativeButton("取消", new OnClickListener()
 		{
 			public void onClick(DialogInterface dialog,
-				int which) {	
+				int which) {
 			}
 		});
+		this.mUrlDialog = this.mUrlConfBuilder.create();
 	}
 
 }
