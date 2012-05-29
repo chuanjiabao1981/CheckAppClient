@@ -18,7 +18,11 @@ public class MyWebClient extends WebViewClient{
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setDataAndType(Uri.parse(url),"video/3gp");
 			a.startActivity(intent);
-			
+			return true;
+		}else if(url.endsWith(".mp4")){
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.parse(url),"video/mp4");
+			a.startActivity(intent);
 			return true;
 		}
         view.loadUrl(url);
