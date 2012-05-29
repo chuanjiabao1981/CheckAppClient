@@ -1,4 +1,4 @@
-package com.android.task.main;
+package com.android.task.web;
 
 import android.app.Activity;
 import android.content.Intent;

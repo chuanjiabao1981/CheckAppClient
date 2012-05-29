@@ -6,12 +6,15 @@ import com.android.task.R.layout;
 import com.android.task.picture.PhotoCapturer;
 import com.android.task.tools.UploadMessage;
 import com.android.task.video.VideoRecorder;
+import com.android.task.web.MyWebChromeClient;
+import com.android.task.web.MyWebClient;
 
 import android.R.string;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
@@ -101,9 +104,17 @@ public class WebMainActivity extends Activity {
 				// pop config dialog to set url
 				final View url_setting = getLayoutInflater().inflate(
 						R.layout.url_config_layout, null);
+				SharedPreferences preferences;
+				SharedPreferences.Editor editor;
+//				WebMainActivity.this.
+				preferences = getSharedPreferences("check_app_conf", android.content.Context.MODE_WORLD_WRITEABLE);
+				editor = preferences.edit();
 				AlertDialog.Builder url_config = new AlertDialog.Builder(WebMainActivity.this);
 				url_config.setTitle("请输入要设置的URL");
 				url_config.setView(url_setting);
+				
+				EditText url_edit = (EditText)url_setting.findViewById(R.id.url_edit);
+				url_edit.setText(preferences.getString("url", "www.google.com"));
 				url_config.setPositiveButton("确定", new OnClickListener()
 				{
 					public void onClick(DialogInterface dialog,
@@ -117,6 +128,12 @@ public class WebMainActivity extends Activity {
 								WebMainActivity.this, "已经保存URL: "+myUrl, Toast.LENGTH_LONG).show();
 						Toast.makeText(
 								WebMainActivity.this, "正在加载 "+myUrl, Toast.LENGTH_LONG).show();
+						SharedPreferences preferences;
+						SharedPreferences.Editor editor;
+						preferences = getSharedPreferences("check_app_conf", android.content.Context.MODE_WORLD_WRITEABLE);
+						editor = preferences.edit();
+						editor.putString("url", myUrl);
+						editor.commit();
 						mWebView.loadUrl(myUrl);
 						
 					}

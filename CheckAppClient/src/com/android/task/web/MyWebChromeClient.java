@@ -1,4 +1,4 @@
-package com.android.task.main;
+package com.android.task.web;
 
 import com.android.task.picture.PhotoCapturer;
 import com.android.task.tools.UploadMessage;
