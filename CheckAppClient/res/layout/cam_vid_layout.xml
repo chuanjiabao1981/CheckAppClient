@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="70" >
+
+        <SurfaceView
+            android:id="@+id/vid_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TextView
+            android:id="@+id/vid_info_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="20dp"
+            android:text="预览中"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </FrameLayout>
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="0px"
+	    android:layout_weight="15" >
+	    
+	    <Button
+	    android:id="@+id/vid_rec_btn"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="0.5"
+	    android:text="开始拍摄" 
+	    android:background="@drawable/button_shape"
+	    style="@style/ButtonText"/>
+	    
+	     <Button
+	    android:id="@+id/vid_exit_btn"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="0.5"
+	    android:text="取消" 
+	    android:background="@drawable/button_shape"
+	    style="@style/ButtonText"/>
+	    
+	</LinearLayout>
+
+</LinearLayout>
