@@ -3,6 +3,7 @@ package com.android.task.main;
 import com.android.task.R;
 import com.android.task.R.id;
 import com.android.task.R.layout;
+import com.android.task.main.function.CheckAppClientExit;
 import com.android.task.main.function.UrlConfigure;
 import com.android.task.picture.PhotoCapturer;
 import com.android.task.tools.UploadMessage;
@@ -35,10 +36,10 @@ public class WebMainActivity extends Activity {
 	
 	private WebView mWebView;
 	private UrlConfigure mUrlConf;
-	// set function picker
+	private CheckAppClientExit mExit;
 	final CharSequence[] func_items = {"拍照", "摄像", "取消"};
 	final String TAG = WebMainActivity.class.getName();
-	String myUrl; 
+	
 	protected void onActivityResult(int requestCode, int resultCode,  Intent intent) 
 	{
 		 System.err.println(requestCode);
@@ -62,6 +63,8 @@ public class WebMainActivity extends Activity {
         
         
         mWebView.loadUrl(mUrlConf.getUrl());
+        
+        mExit	= new CheckAppClientExit(this);
 
         
         // set button click handler
@@ -113,8 +116,9 @@ public class WebMainActivity extends Activity {
         exit_text.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View arg0) {
+				mExit.getCheckAppExitDialog().show();
 				// pop a confirmation dialog
-				AlertDialog.Builder exit_diag = new AlertDialog.Builder(WebMainActivity.this);
+				/*AlertDialog.Builder exit_diag = new AlertDialog.Builder(WebMainActivity.this);
 				exit_diag.setTitle("确定要退出吗");
 				exit_diag.setPositiveButton("确定", new OnClickListener() {
 					public void onClick(DialogInterface dialog,
@@ -128,8 +132,7 @@ public class WebMainActivity extends Activity {
 					public void onClick(DialogInterface dialog,
 						int which) {	
 					}
-				});
-				exit_diag.show();
+				});*/
 			}
 		});
         
