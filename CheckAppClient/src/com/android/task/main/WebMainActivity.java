@@ -1,49 +1,29 @@
 package com.android.task.main;
 
 import com.android.task.R;
-import com.android.task.R.id;
-import com.android.task.R.layout;
 import com.android.task.main.function.CheckAppClientExit;
+import com.android.task.main.function.MainPage;
 import com.android.task.main.function.UrlConfigure;
-import com.android.task.picture.PhotoCapturer;
-import com.android.task.tools.UploadMessage;
-import com.android.task.video.VideoRecorder;
 import com.android.task.web.MyWebChromeClient;
 import com.android.task.web.MyWebClient;
 
-import android.R.string;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class WebMainActivity extends Activity {
-	
+	private final boolean	   APP_DEBUG    = false;
+	private final String TAG = WebMainActivity.class.getName();
+
 	private WebView mWebView;
 	private UrlConfigure mUrlConf;
 	private CheckAppClientExit mExit;
-	final CharSequence[] func_items = {"拍照", "摄像", "取消"};
-	final String TAG = WebMainActivity.class.getName();
-	
-	protected void onActivityResult(int requestCode, int resultCode,  Intent intent) 
-	{
-		 System.err.println(requestCode);
-	}
+	private MainPage		   mMpage;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,43 +45,20 @@ public class WebMainActivity extends Activity {
         mWebView.loadUrl(mUrlConf.getUrl());
         
         mExit	= new CheckAppClientExit(this);
+        mMpage  = new MainPage(this);
 
         
-        // set button click handler
         TextView menu_text = (TextView)findViewById(R.id.main_menu_text);
         menu_text.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				try {
-					 // popup a list view to choose functions
-					AlertDialog.Builder builder = new AlertDialog.Builder(WebMainActivity.this);
-					builder.setTitle("选择功能");
-					builder.setItems(func_items, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int item) {
-							Intent i;
-							switch (item) {
-							case 0:
-								i = new Intent(WebMainActivity.this, PhotoCapturer.class);
-								startActivity(i);
-								break;
-							case 1:
-								i = new Intent(WebMainActivity.this, VideoRecorder.class);
-								startActivity(i);
-								break;
-							case 2:
-							default:
-								break;
-							}
-						};
-					});
-					builder.show();
-					
-				} catch (Exception e) {
-					// TODO: handle exception
-					Log.e(TAG, "open function error: "+e.getMessage());
+				if (WebMainActivity.this.APP_DEBUG){
+					Log.d(TAG,"DEBUG模式");
+					mMpage.getMainPageDialog().show();
+				}else{
+			        mWebView.loadUrl(mUrlConf.getUrl());
+			        Toast.makeText(WebMainActivity.this, "返回...", Toast.LENGTH_LONG).show();
 				}
-				
 			}
 		});
         
@@ -114,25 +71,8 @@ public class WebMainActivity extends Activity {
         
         TextView exit_text = (TextView)findViewById(R.id.main_exit_text);
         exit_text.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View arg0) {
 				mExit.getCheckAppExitDialog().show();
-				// pop a confirmation dialog
-				/*AlertDialog.Builder exit_diag = new AlertDialog.Builder(WebMainActivity.this);
-				exit_diag.setTitle("确定要退出吗");
-				exit_diag.setPositiveButton("确定", new OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-							WebMainActivity.this.finish();
-							return;
-						}
-				});
-				exit_diag.setNegativeButton("取消", new OnClickListener()
-				{
-					public void onClick(DialogInterface dialog,
-						int which) {	
-					}
-				});*/
 			}
 		});
         
