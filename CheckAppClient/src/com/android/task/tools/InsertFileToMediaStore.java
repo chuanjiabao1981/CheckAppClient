@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -21,7 +19,6 @@ public class InsertFileToMediaStore {
 	private File 					mMediaFile 		 = null;
 	private ContentResolver			mContentResolver = null; 
 	private String                  mMimeType	     = null;
-	private String 					mMediaFileName	 = null;
 	private final String		    SPLITOR			 = "/";
 	private boolean					mVideo			 = false;
 	private boolean					mImage			 = false;
@@ -33,7 +30,6 @@ public class InsertFileToMediaStore {
 		this.mMediaFile 			= media_file;
 		this.mContentResolver		= a.getContentResolver();
 		this.mMimeType				= mime_type;
-		this.mMediaFileName		    = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
 		if (this.mMimeType.split(SPLITOR)[0].equalsIgnoreCase("video")){
 			this.mVideo 	=	true;
 		}else if (this.mMimeType.split(SPLITOR)[0].equalsIgnoreCase("image")){
