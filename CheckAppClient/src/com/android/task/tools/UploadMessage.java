@@ -2,7 +2,6 @@ package com.android.task.tools;
 
 
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.webkit.ValueCallback;
 
