@@ -54,8 +54,8 @@ public class VideoRecorder extends Activity
 	int left_time = max_video_duration;
 	final static int VIDEO_SHOW_REQUEST = 100;
 	
-	final  int VIDEO_WIDTH 	= 320;
-	final  int VIDEO_HEIGHT	= 240;
+	final  int VIDEO_WIDTH 	= 480;
+	final  int VIDEO_HEIGHT	= 640;
 	
 	
 	
@@ -91,8 +91,10 @@ public class VideoRecorder extends Activity
 		  InsertFileToMediaStore insert_file = new InsertFileToMediaStore(VideoRecorder.this,this.save_vid_file,"video/mp4");
 
 		  Uri uri = insert_file.insert();
-		  if (this.save_vid_file != null)
+		  if (this.save_vid_file != null){
 			  this.save_vid_file.delete();
+			  this.save_vid_file = null;
+		  }
 		  UploadMessage.set_upload_message(uri);
 		  finish();
 	  }
@@ -357,7 +359,7 @@ public class VideoRecorder extends Activity
 			handler.postDelayed(task, 1000);
 			
 		} catch (IOException e) {
-			Toast.makeText(VideoRecorder.this, "error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(VideoRecorder.this, "Aerror: "+e.getMessage(), Toast.LENGTH_SHORT).show();
 			Log.d("aa", "prepare error: " + e.getMessage());
 			ReleaseRecorder();
 			return false;
