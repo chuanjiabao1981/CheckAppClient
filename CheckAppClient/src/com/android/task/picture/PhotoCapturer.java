@@ -66,7 +66,7 @@ public class PhotoCapturer extends Activity
 			
 			public void surfaceDestroyed(SurfaceHolder holder)
 			{
-				Log.i(TAG,"surface destroyed");
+				Log.d(TAG,"surface destroyed");
 
 				// 如果camera不为null ,释放摄像头
 				if (camera != null)
