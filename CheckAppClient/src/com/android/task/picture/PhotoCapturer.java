@@ -122,7 +122,7 @@ public class PhotoCapturer extends Activity
 		{
 			try
 			{
-				CameraSetting.setCameraParameter(camera, surfaceHolder);
+				CameraSetting.setCameraPicParameter(camera, surfaceHolder);
 				camera.startPreview();
 				camera.autoFocus(null);
 			}

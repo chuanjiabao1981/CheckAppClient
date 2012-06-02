@@ -17,6 +17,7 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
@@ -228,6 +229,7 @@ public class VideoRecorder extends Activity
 				Camera.Parameters parameters = camera.getParameters();
 				camera.setDisplayOrientation(90);
 				parameters.setRotation(90);
+				//parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
 				camera.setParameters(parameters);
 				//通过SurfaceView显示取景画面
 				camera.setPreviewDisplay(surfaceHolder);
@@ -335,6 +337,7 @@ public class VideoRecorder extends Activity
 			/*
 //			vRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);*/
 			vRecorder.setVideoSize(this.VIDEO_WIDTH, this.VIDEO_HEIGHT);
+			
 			// set frame rate
 			vRecorder.setVideoFrameRate(20);
 			vRecorder.setVideoEncodingBitRate(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoBitRate *10);

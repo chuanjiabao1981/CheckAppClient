@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class UrlConfigure {
 	private final String URL_PREFER_NAME 			= "CHECK_APP_PRE";
 	private final String URL_PREFER_ITEM_URL		= "SERVER_URL";
-	private final String URL_PREFER_ITEM_URL_DEFAULT = "www.yunjian.com:3000";
+	private final String URL_PREFER_ITEM_URL_DEFAULT = "42.121.13.219";
 	private final String URL_TITLE		 = "输入服务器地址";
 	private final String TAG			 = UrlConfigure.class.getName();
 	private Activity mA;
