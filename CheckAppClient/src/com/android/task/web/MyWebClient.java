@@ -1,13 +1,21 @@
 package com.android.task.web;
 
+import com.android.task.main.WebMainActivity;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class MyWebClient extends WebViewClient{
 	private Activity a;
+	private ProgressDialog mLoadingBar;
 	public MyWebClient(Activity a)
 	{
 		super();
@@ -27,5 +35,32 @@ public class MyWebClient extends WebViewClient{
 		}
         view.loadUrl(url);
         return true;
+    }
+	
+	@Override
+	public void onPageStarted(WebView view, String url, Bitmap favicon) 
+	{
+		//mLoadingBar=ProgressDialog.show(this.a, null, "正在加载…");
+		Toast.makeText(this.a, "访问服务器...", Toast.LENGTH_LONG).show();
+	}
+	
+	@Override
+	public void onPageFinished(WebView view, String url) {
+	Toast.makeText(this.a, "服务正常返回", Toast.LENGTH_LONG).show();
+		super.onPageFinished(view, url);
+	}
+	@Override
+    public void onReceivedError(WebView view, int errorCode,String description, String failingUrl) {
+        Toast.makeText(this.a, "网络错误", Toast.LENGTH_LONG).show();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this.a).create();
+        alertDialog.setTitle("发生错误");
+        alertDialog.setMessage(description);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which) {
+            
+            	alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }

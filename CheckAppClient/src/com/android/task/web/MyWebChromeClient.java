@@ -1,9 +1,12 @@
 package com.android.task.web;
 
+
+import com.android.task.main.WebMainActivity;
 import com.android.task.picture.PhotoCapturer;
 import com.android.task.tools.UploadMessage;
 import com.android.task.video.VideoRecorder;
 
+import android.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -14,14 +17,17 @@ import android.net.Uri;
 import android.util.Log;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 
 
 public class MyWebChromeClient extends WebChromeClient{
 	ValueCallback<Uri> mUploadMessage = null;
-	Activity		   mActivity	  = null;	
+	WebMainActivity	   mActivity	  = null;	
 	Builder 	   	   mBuilder		  = null;
 	private final String	TAG		  = MyWebChromeClient.class.getName();
-	final CharSequence[] func_items   = {"拍照", "摄像", "取消"};
+	public  final static int       FILECHOOSER_IMAG_RESULTCODE 		= 101;
+	public  final static int       FILECHOOSER_VIDEO_RESULTCODE 	= 201;
+	final CharSequence[] func_items   = {"现场拍照", "现场摄像", "选取照片","选取视频","取消"};
 	final String         DIALOG_TITLE = "选择功能";
 
 	private void init_dialog()
@@ -42,6 +48,12 @@ public class MyWebChromeClient extends WebChromeClient{
 						case 1:
 							i = 1;
 							break;
+						case 2:
+							i = 2;
+							break;
+						case 3:
+							i = 3;
+							break;
 						default :
 							break;
 					}
@@ -55,6 +67,21 @@ public class MyWebChromeClient extends WebChromeClient{
 						Intent intent = new Intent(MyWebChromeClient.this.mActivity, VideoRecorder.class);
 						UploadMessage.set_upload_uri(mUploadMessage);
 						MyWebChromeClient.this.mActivity.startActivity(intent);
+					}else if (i == 2) {
+						Log.i(TAG,"选择照片");
+						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);  
+						intent.addCategory(Intent.CATEGORY_OPENABLE);  
+						intent.setType("image/*");  
+						UploadMessage.set_upload_uri(mUploadMessage);
+						MyWebChromeClient.this.mActivity.startActivityForResult(Intent.createChooser(intent,"File Chooser"), FILECHOOSER_IMAG_RESULTCODE);
+					}else if(i == 3){
+						Log.i(TAG,"选取视频");
+						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+						intent.addCategory(Intent.CATEGORY_OPENABLE); 
+						intent.setType("video/*");  
+						UploadMessage.set_upload_uri(mUploadMessage);
+						MyWebChromeClient.this.mActivity.startActivityForResult(Intent.createChooser(intent,"File Chooser"), FILECHOOSER_VIDEO_RESULTCODE);
+						
 					}else{
 						mUploadMessage.onReceiveValue(null);
 					}
@@ -63,13 +90,23 @@ public class MyWebChromeClient extends WebChromeClient{
 				);
 
 	}
-	public MyWebChromeClient(Activity a)
+	public MyWebChromeClient(WebMainActivity a)
 	{
 		this.mActivity = a;
 		this.mBuilder  = new AlertDialog.Builder(a);
 		this.init_dialog();
 
 	}
+	public void onProgressChanged(WebView view, int progress)   
+    {
+		this.mActivity.ProgressDialog.show();
+		this.mActivity.ProgressDialog.setProgress(0);
+		//this.mActivity.setProgress(progress * 100);
+		this.mActivity.ProgressDialog.incrementProgressBy(progress);
+		//this.mActivity.ProgressDialog.i
+		if(progress == 100 && this.mActivity.ProgressDialog.isShowing())
+			this.mActivity.ProgressDialog.dismiss();
+    }
 	
 	public void openFileChooser(ValueCallback<Uri> uploadMsg)
 	{

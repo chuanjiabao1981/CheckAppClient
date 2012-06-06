@@ -57,6 +57,8 @@ public class VideoRecorder extends Activity
 	final  int VIDEO_WIDTH 	= 480;
 	final  int VIDEO_HEIGHT	= 640;
 	
+	final  int VIDEO_MUILTI  = 50;
+	
 	
 	
 	// recording timer
@@ -342,7 +344,7 @@ public class VideoRecorder extends Activity
 			
 			// set frame rate
 			vRecorder.setVideoFrameRate(20);
-			vRecorder.setVideoEncodingBitRate(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoBitRate *10);
+			vRecorder.setVideoEncodingBitRate(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).videoBitRate *VIDEO_MUILTI);
 
 			
 			
