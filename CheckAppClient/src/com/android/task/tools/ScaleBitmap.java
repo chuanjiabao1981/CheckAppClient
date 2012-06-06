@@ -3,14 +3,12 @@ package com.android.task.tools;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.android.task.main.WebMainActivity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
 
 public class ScaleBitmap {
 	private Uri mSrcImageUri = null;
