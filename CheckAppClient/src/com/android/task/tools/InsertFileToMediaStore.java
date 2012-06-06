@@ -6,17 +6,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 public class InsertFileToMediaStore {
 	private File 					mMediaFile 		 = null;
+	private Bitmap					mBitMap 		 = null;
 	private ContentResolver			mContentResolver = null; 
 	private String                  mMimeType	     = null;
 	private final String		    SPLITOR			 = "/";
@@ -28,6 +32,20 @@ public class InsertFileToMediaStore {
 	{
 		this.a						= a;
 		this.mMediaFile 			= media_file;
+		init(a,mime_type);
+		
+	}
+	public InsertFileToMediaStore(Activity a,Bitmap b,String mime_type)
+	{
+		this.a							= a;
+		this.mBitMap 			        = b;
+		init(a,mime_type);
+		
+	}
+	
+	
+	private void init(Activity a,String mime_type)
+	{
 		this.mContentResolver		= a.getContentResolver();
 		this.mMimeType				= mime_type;
 		if (this.mMimeType.split(SPLITOR)[0].equalsIgnoreCase("video")){
@@ -52,14 +70,31 @@ public class InsertFileToMediaStore {
 		try {
 			BufferedOutputStream os;
 			os = new BufferedOutputStream(this.mContentResolver.openOutputStream(content_uri));
-			BufferedInputStream 	is  = new BufferedInputStream(new FileInputStream(this.mMediaFile));
-			int byte_;
-		    while ((byte_ = is.read()) != -1)
-		    	os.write(byte_);
+			BufferedInputStream 	is  = null;
+			if (this.mMediaFile != null){
+				Log.d(TAG,"处理文本输入");
 
-		    os.flush();
-		    os.close();
-		    is.close();
+				is = new BufferedInputStream(new FileInputStream(this.mMediaFile));
+				int byte_;
+			    while ((byte_ = is.read()) != -1)
+			    	os.write(byte_);
+
+			    os.flush();
+			    os.close();
+			    is.close();
+			}else if (this.mBitMap != null){
+				Log.d(TAG,"处理 BitMap输入");
+				OutputStream os2 = null;
+				os2 = this.mContentResolver.openOutputStream(content_uri);
+				this.mBitMap.compress(Bitmap.CompressFormat.JPEG, 85, os2);
+				os2.flush();
+				os2.close();
+			}else{
+				Log.e(TAG,"插入文件到media 中发生错误");
+				Toast.makeText(this.a, "插入数据时发生错误，请重试！", Toast.LENGTH_LONG).show();
+				return null;
+			}
+				
 		    this.a.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, content_uri));
 		    return content_uri;
 		} catch (FileNotFoundException e) {

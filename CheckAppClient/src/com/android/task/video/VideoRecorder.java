@@ -57,7 +57,7 @@ public class VideoRecorder extends Activity
 	final  int VIDEO_WIDTH 	= 480;
 	final  int VIDEO_HEIGHT	= 640;
 	
-	final  int VIDEO_MUILTI  = 50;
+	final  int VIDEO_MUILTI  = 30;
 	
 	
 	

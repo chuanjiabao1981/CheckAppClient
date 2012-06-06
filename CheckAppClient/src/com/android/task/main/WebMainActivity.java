@@ -4,6 +4,9 @@ import com.android.task.R;
 import com.android.task.main.function.CheckAppClientExit;
 import com.android.task.main.function.MainPage;
 import com.android.task.main.function.UrlConfigure;
+import com.android.task.picture.PhotoSaveDialog;
+import com.android.task.tools.InsertFileToMediaStore;
+import com.android.task.tools.ScaleBitmap;
 import com.android.task.tools.UploadMessage;
 import com.android.task.web.MyWebChromeClient;
 import com.android.task.web.MyWebClient;
@@ -11,6 +14,7 @@ import com.android.task.web.MyWebClient;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,7 +104,11 @@ public class WebMainActivity extends Activity {
     	{  
 
     		Uri result = intent == null || resultCode != RESULT_OK ? null  : intent.getData();  
-    		UploadMessage.set_upload_message(result);
+    		ScaleBitmap scale_bitmap = new ScaleBitmap(this,result);
+    		Bitmap      bit_map      = scale_bitmap.scale();
+    		InsertFileToMediaStore insert_file = new InsertFileToMediaStore(this,bit_map,"image/jpeg");
+			Uri uri = insert_file.insert();
+    		UploadMessage.set_upload_message(uri);
     	}else if (requestCode == MyWebChromeClient.FILECHOOSER_VIDEO_RESULTCODE){
     		Uri result = intent == null || resultCode != RESULT_OK ? null  : intent.getData();  
     		UploadMessage.set_upload_message(result);
