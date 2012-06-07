@@ -95,7 +95,7 @@ public class InsertFileToMediaStore {
 				return null;
 			}
 				
-		    this.a.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, content_uri));
+		    //this.a.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, content_uri));
 		    return content_uri;
 		} catch (FileNotFoundException e) {
 			Log.e(this.TAG,e.getMessage());
