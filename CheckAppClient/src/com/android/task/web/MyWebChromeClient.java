@@ -10,10 +10,12 @@ import android.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -27,6 +29,8 @@ public class MyWebChromeClient extends WebChromeClient{
 	private final String	TAG		  = MyWebChromeClient.class.getName();
 	public  final static int       FILECHOOSER_IMAG_RESULTCODE 		= 101;
 	public  final static int       FILECHOOSER_VIDEO_RESULTCODE 	= 201;
+	public  final static int       CAPTURE_PICTURE_INTENT			= 301;
+	public  final static int       CAPTURE_VIDEO_INTENT				= 401;
 	final CharSequence[] func_items   = {"现场拍照", "现场摄像", "选取照片","选取视频","取消"};
 	final String         DIALOG_TITLE = "选择功能";
 
@@ -59,14 +63,44 @@ public class MyWebChromeClient extends WebChromeClient{
 					}
 					if (i == 0){
 						Log.i(TAG,"拍照");
+						/*
 						Intent intent = new Intent(MyWebChromeClient.this.mActivity,PhotoCapturer.class);
 						UploadMessage.set_upload_uri(mUploadMessage);
 						MyWebChromeClient.this.mActivity.startActivity(intent);
+						*/
+						
+				        String fileName = "temp.jpg";  
+				        ContentValues values = new ContentValues();  
+				        values.put(MediaStore.Images.Media.TITLE, fileName);  
+				        Uri mCapturedImageURI = MyWebChromeClient.this.mActivity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);  
+
+				        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);  
+				        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);  
+				        MyWebChromeClient.this.mActivity.startActivityForResult(intent, CAPTURE_PICTURE_INTENT);
+						UploadMessage.set_upload_uri(mUploadMessage,mCapturedImageURI);
+
 					}else if (i == 1){
 						Log.i(TAG,"摄像");
+						
 						Intent intent = new Intent(MyWebChromeClient.this.mActivity, VideoRecorder.class);
 						UploadMessage.set_upload_uri(mUploadMessage);
 						MyWebChromeClient.this.mActivity.startActivity(intent);
+						/*
+						String fileName ="temp.3gp";
+						ContentValues values = new ContentValues();  
+						values.put(MediaStore.Video.Media.TITLE, fileName); 
+						Uri cameraVideoURI = MyWebChromeClient.this.mActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);  
+
+
+				        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE); 
+				        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraVideoURI);  
+//						intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+						intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 600000);   
+						intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
+						MyWebChromeClient.this.mActivity.startActivityForResult(intent, CAPTURE_VIDEO_INTENT);
+						UploadMessage.set_upload_uri(mUploadMessage,cameraVideoURI);
+				        */
+				        
 					}else if (i == 2) {
 						Log.i(TAG,"选择照片");
 						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);  

@@ -30,7 +30,7 @@
         <activity 
             android:name="com.android.task.video.VideoPreviewer" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".picture.PhotoCapturer" android:screenOrientation="portrait" ></activity>
+        <activity android:name="com.android.task.picture.PhotoCapturer" android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

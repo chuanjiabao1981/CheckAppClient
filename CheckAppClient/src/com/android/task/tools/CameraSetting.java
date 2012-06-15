@@ -17,7 +17,6 @@ public class CameraSetting
 		Log.d(TAG,"Seting Camera Parameter");
 		Camera.Parameters parameters = camera.getParameters();
 		camera.setDisplayOrientation(DISPLAY_DEGREE);
-		parameters.setRotation(DISPLAY_DEGREE);
         parameters.setPictureSize(PIC_WIDTH, PIC_HEIGHT);
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 		camera.setParameters(parameters);

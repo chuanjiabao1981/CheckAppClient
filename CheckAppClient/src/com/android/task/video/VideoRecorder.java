@@ -1,6 +1,7 @@
 package com.android.task.video;
 
 
+import com.android.task.picture.PhotoCapturer;
 import com.android.task.tools.*;
 
 import java.io.File;
@@ -12,6 +13,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
+import android.hardware.SensorManager;
+import android.hardware.Camera.CameraInfo;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -22,6 +25,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+import android.view.OrientationEventListener;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
@@ -54,10 +58,12 @@ public class VideoRecorder extends Activity
 	int left_time = max_video_duration;
 	final static int VIDEO_SHOW_REQUEST = 100;
 	
-	final  int VIDEO_WIDTH 	= 480;
-	final  int VIDEO_HEIGHT	= 640;
+	final  int VIDEO_WIDTH 	= 640;
+	final  int VIDEO_HEIGHT	= 480;
 	
 	final  int VIDEO_MUILTI  = 30;
+	
+	OrientationEventListener myOrientationEventListener = null;
 	
 	
 	
@@ -125,6 +131,44 @@ public class VideoRecorder extends Activity
 		// 获取屏幕的宽和高
 		screenWidth = display.getWidth();
 		screenHeight = display.getHeight();*/
+		
+		myOrientationEventListener
+		   = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL){
+
+		    @Override
+		    public void onOrientationChanged(int orientation) {
+		    	
+		    	int cameraId = 0;
+		    	
+		    	android.hardware.Camera.CameraInfo info =
+		                new android.hardware.Camera.CameraInfo();
+		         android.hardware.Camera.getCameraInfo(cameraId, info);
+		         orientation = (orientation + 45) / 90 * 90;
+		         int rotation = 0;
+		         if (info.facing == CameraInfo.CAMERA_FACING_FRONT) {
+		             rotation = (info.orientation - orientation + 360) % 360;
+		         } else {  // back-facing camera
+		             rotation = (info.orientation + orientation) % 360;
+
+		         }
+		         if (VideoRecorder.this.camera != null){
+//		        	 PhotoCapturer.this.camera.getParameters().setRotation(rotation);
+		        	 Camera.Parameters parameters = camera.getParameters();
+		        	 parameters.setRotation(rotation);
+		        	 VideoRecorder.this.camera.setParameters(parameters);
+//				     Toast.makeText(PhotoCapturer.this, "旋转:"+String.valueOf(rotation), Toast.LENGTH_LONG).show();
+
+		         }
+		    }};
+		    
+		      if (myOrientationEventListener.canDetectOrientation()){
+		       Toast.makeText(this, "Can DetectOrientation", Toast.LENGTH_LONG).show();
+		       myOrientationEventListener.enable();
+		      }
+		      else{
+		       Toast.makeText(this, "Can't DetectOrientation", Toast.LENGTH_LONG).show();
+		       finish();
+		      }
 		// 获取界面中SurfaceView组件
 		sView = (SurfaceView) findViewById(R.id.vid_view);
 		// 获得SurfaceView的SurfaceHolder
@@ -168,7 +212,7 @@ public class VideoRecorder extends Activity
 					camera.release();
 					Log.e("aa", "camera released in surfacedestroyed");
 					camera = null;
-					Toast.makeText(VideoRecorder.this, "得到结果了2", Toast.LENGTH_SHORT).show();
+//					Toast.makeText(VideoRecorder.this, "得到结果了2", Toast.LENGTH_SHORT).show();
 
 				}
 			}
@@ -233,6 +277,7 @@ public class VideoRecorder extends Activity
 				Camera.Parameters parameters = camera.getParameters();
 				camera.setDisplayOrientation(90);
 				parameters.setRotation(90);
+				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
 				//parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
 				camera.setParameters(parameters);
 				//通过SurfaceView显示取景画面

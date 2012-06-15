@@ -79,6 +79,7 @@ public class WebMainActivity extends Activity {
 				}else{
 			        mWebView.loadUrl(mUrlConf.getUrl());
 			        Toast.makeText(WebMainActivity.this, "·µ»Ø...", Toast.LENGTH_LONG).show();
+//			        Toast.makeText(WebMainActivity.this, String.valueOf(getRequestedOrientation()) , Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -112,6 +113,26 @@ public class WebMainActivity extends Activity {
     	}else if (requestCode == MyWebChromeClient.FILECHOOSER_VIDEO_RESULTCODE){
     		Uri result = intent == null || resultCode != RESULT_OK ? null  : intent.getData();  
     		UploadMessage.set_upload_message(result);
+    	}else if (requestCode == MyWebChromeClient.CAPTURE_PICTURE_INTENT){
+    		 if (resultCode != RESULT_OK  ){
+    			 UploadMessage.set_upload_message(null);
+    		 }else{
+    			 if (UploadMessage.get_file_uri() != null){
+    				 	ScaleBitmap scale_bitmap = new ScaleBitmap(this,UploadMessage.get_file_uri());
+    		    		Bitmap      bit_map      = scale_bitmap.scale();
+    		    		InsertFileToMediaStore insert_file = new InsertFileToMediaStore(this,bit_map,"image/jpeg");
+    					Uri uri = insert_file.insert();
+    		    		UploadMessage.set_upload_message(uri);
+    			 }else{
+    				 UploadMessage.set_upload_message();
+    			 }
+    		 }
+    	}else if (requestCode == MyWebChromeClient.CAPTURE_VIDEO_INTENT){
+    		if (resultCode != RESULT_OK  ){
+   			 	UploadMessage.set_upload_message(null);
+   		 	}else{
+   		 		UploadMessage.set_upload_message();
+   		 	}
     	}
 
     }

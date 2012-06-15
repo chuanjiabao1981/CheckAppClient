@@ -1,5 +1,6 @@
 package com.android.task.picture;
 
+import com.android.task.main.WebMainActivity;
 import com.android.task.tools.*;
 
 import java.io.File;
@@ -13,9 +14,13 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PictureCallback;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -37,6 +42,8 @@ public class PhotoCapturer extends Activity
 	//是否在浏览中
 	boolean isPreview = false;
 	
+	OrientationEventListener myOrientationEventListener;
+
 	
 	
     @Override
@@ -48,6 +55,49 @@ public class PhotoCapturer extends Activity
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 			WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.cam_pic_layout);
+		
+		
+		
+		myOrientationEventListener
+		   = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL){
+
+		    @Override
+		    public void onOrientationChanged(int orientation) {
+		    	
+		     // TODO Auto-generated method stub
+		    	int cameraId = 0;
+		    	
+		    	android.hardware.Camera.CameraInfo info =
+		                new android.hardware.Camera.CameraInfo();
+		         android.hardware.Camera.getCameraInfo(cameraId, info);
+		         orientation = (orientation + 45) / 90 * 90;
+		         int rotation = 0;
+		         if (info.facing == CameraInfo.CAMERA_FACING_FRONT) {
+		             rotation = (info.orientation - orientation + 360) % 360;
+		         } else {  // back-facing camera
+		             rotation = (info.orientation + orientation) % 360;
+
+		         }
+		         if (PhotoCapturer.this.camera != null){
+//		        	 PhotoCapturer.this.camera.getParameters().setRotation(rotation);
+		        	 Camera.Parameters parameters = camera.getParameters();
+		        	 parameters.setRotation(rotation);
+		        	 PhotoCapturer.this.camera.setParameters(parameters);
+//				     Toast.makeText(PhotoCapturer.this, "旋转:"+String.valueOf(rotation), Toast.LENGTH_LONG).show();
+
+		         }
+		    }};
+		    
+		      if (myOrientationEventListener.canDetectOrientation()){
+		       Toast.makeText(this, "Can DetectOrientation", Toast.LENGTH_LONG).show();
+		       myOrientationEventListener.enable();
+		      }
+		      else{
+		       Toast.makeText(this, "Can't DetectOrientation", Toast.LENGTH_LONG).show();
+		       finish();
+		      }
+		    
+		    
 		
 		sView = (SurfaceView) findViewById(R.id.pic_view);
 		surfaceHolder = sView.getHolder();
