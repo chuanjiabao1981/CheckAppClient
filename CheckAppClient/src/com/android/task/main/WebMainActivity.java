@@ -3,6 +3,7 @@ package com.android.task.main;
 import com.android.task.R;
 import com.android.task.main.function.CheckAppClientExit;
 import com.android.task.main.function.MainPage;
+import com.android.task.main.function.SysSetting;
 import com.android.task.main.function.UrlConfigure;
 import com.android.task.picture.PhotoSaveDialog;
 import com.android.task.tools.InsertFileToMediaStore;
@@ -35,6 +36,7 @@ public class WebMainActivity extends Activity {
 	private UrlConfigure mUrlConf;
 	private CheckAppClientExit mExit;
 	private MainPage		   mMpage;
+	private SysSetting		   mSysSetting;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +62,8 @@ public class WebMainActivity extends Activity {
         mWebView.setWebViewClient(new MyWebClient(this));
         
         
-        mUrlConf = new UrlConfigure(this,this.mWebView);
-        
+        mUrlConf 		= new UrlConfigure(this,this.mWebView);
+        mSysSetting		= new SysSetting(this,this.mWebView);
         
         mWebView.loadUrl(mUrlConf.getUrl());
         
@@ -87,7 +89,8 @@ public class WebMainActivity extends Activity {
         TextView config_text = (TextView)findViewById(R.id.main_config_text);
         config_text.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-				mUrlConf.getUrlDialog().show();
+				mSysSetting.getSettingDialog().show();
+//				mUrlConf.getUrlDialog().show();
 			}
 		});
         
