@@ -22,7 +22,14 @@ public class EquipmentId
 			Log.d(TAG, "TelephoneManager is null");
 			return "null";
 		}
-		return this.mTelephonyManager.getDeviceId() +"-" +this.mTelephonyManager.getSubscriberId();
+		String imeistring = this.mTelephonyManager.getDeviceId();
+		if (imeistring == null)
+			imeistring = "0";
+		String imsistring = this.mTelephonyManager.getSubscriberId();
+		if (imsistring == null)
+			imsistring = "0";
+		return imeistring +"-" +imsistring;
+		//return imeistring==null?"0":imeistring +"-" +imsistring==null?"0":imsistring;
 	}
 	private void init()
 	{

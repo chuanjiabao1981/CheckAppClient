@@ -31,7 +31,7 @@ public class MyWebChromeClient extends WebChromeClient{
 	public  final static int       FILECHOOSER_VIDEO_RESULTCODE 	= 201;
 	public  final static int       CAPTURE_PICTURE_INTENT			= 301;
 	public  final static int       CAPTURE_VIDEO_INTENT				= 401;
-	final CharSequence[] func_items   = {"现场拍照", "现场摄像", "选取照片","选取视频","取消"};
+	final CharSequence[] func_items   = {"现场拍照", "现场摄像", "选取照片","取消"};
 	final String         DIALOG_TITLE = "选择功能";
 
 	private void init_dialog()
@@ -54,9 +54,6 @@ public class MyWebChromeClient extends WebChromeClient{
 							break;
 						case 2:
 							i = 2;
-							break;
-						case 3:
-							i = 3;
 							break;
 						default :
 							break;

@@ -5,10 +5,10 @@ import com.android.task.main.function.CheckAppClientExit;
 import com.android.task.main.function.MainPage;
 import com.android.task.main.function.SysSetting;
 import com.android.task.main.function.UrlConfigure;
-import com.android.task.picture.PhotoSaveDialog;
 import com.android.task.tools.InsertFileToMediaStore;
 import com.android.task.tools.ScaleBitmap;
 import com.android.task.tools.UploadMessage;
+import com.android.task.tools.EquipmentId;
 import com.android.task.web.MyWebChromeClient;
 import com.android.task.web.MyWebClient;
 
@@ -37,6 +37,7 @@ public class WebMainActivity extends Activity {
 	private CheckAppClientExit mExit;
 	private MainPage		   mMpage;
 	private SysSetting		   mSysSetting;
+	private EquipmentId		   mEquipmentId;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,12 +51,13 @@ public class WebMainActivity extends Activity {
     	
         ProgressDialog.setCancelable(false);
         ProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
+        mEquipmentId = new EquipmentId(this);
 
         setContentView(R.layout.web_main);
         
         mWebView = (WebView) findViewById(R.id.main_webview);
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setUserAgentString(mEquipmentId.getId());
         
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.setWebChromeClient(new MyWebChromeClient(this));

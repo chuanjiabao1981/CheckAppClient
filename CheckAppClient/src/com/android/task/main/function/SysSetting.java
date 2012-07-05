@@ -20,7 +20,7 @@ public class SysSetting {
 	private WebView mWebView;
 	private AlertDialog mSettingDialog;
 	private UrlConfigure mUrlConf;
-	private EquipmentId mEquipmentId;
+	private IdShow mIdShow;
 
 
 
@@ -31,7 +31,7 @@ public class SysSetting {
 		this.mA 			= a;
 		this.mWebView		= w;
 		this.mUrlConf		= new UrlConfigure(a,this.mWebView);
-		this.mEquipmentId	= new EquipmentId(a);
+		this.mIdShow		= new IdShow(a);
 		this.init();
 	}
 	
@@ -52,7 +52,7 @@ public class SysSetting {
 					break;
 				case 1:
 					Log.d(TAG,"设备编码");
-					Log.d(TAG,mEquipmentId.getId());
+					SysSetting.this.mIdShow.getIdDialog().show();
 					break;
 				case 2:
 					Log.d(TAG,"取消");
