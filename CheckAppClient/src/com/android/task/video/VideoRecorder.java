@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+import android.view.KeyEvent;
 import android.view.OrientationEventListener;
 import android.view.SurfaceView;
 import android.view.View;
@@ -467,6 +468,11 @@ public class VideoRecorder extends Activity
 			return "00:" + (left_sec > 9 ? left_sec + "" : "0" + left_sec);    
 		}
 	} 
+	 @Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {   
+	    		UploadMessage.set_upload_message(null);
+	    	return super.onKeyDown(keyCode, event);
+	}
 
 }
 

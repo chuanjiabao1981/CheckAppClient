@@ -56,6 +56,7 @@ public class WebMainActivity extends Activity {
         setContentView(R.layout.web_main);
         
         mWebView = (WebView) findViewById(R.id.main_webview);
+        mWebView.setFocusable(true);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setUserAgentString(mEquipmentId.getId());
         
@@ -145,9 +146,13 @@ public class WebMainActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {   
     	if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {  
-    		mWebView.goBack();       
+    		UploadMessage.set_upload_message(null);
+			Log.d(TAG,"go back");
+    		mWebView.goBack(); 
     		return true;
-    		}    
-    	return super.onKeyDown(keyCode, event);
     	}
+		Log.d(TAG,"can't go back");
+    	UploadMessage.set_upload_message(null);
+    	return super.onKeyDown(keyCode, event);
+    }
 }

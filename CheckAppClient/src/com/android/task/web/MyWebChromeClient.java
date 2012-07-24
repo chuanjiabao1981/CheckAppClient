@@ -12,11 +12,13 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -37,6 +39,19 @@ public class MyWebChromeClient extends WebChromeClient{
 	private void init_dialog()
 	{
 		mBuilder.setTitle(DIALOG_TITLE);
+		mBuilder.setOnKeyListener(
+				new OnKeyListener(){
+
+					public boolean onKey(DialogInterface dialog, int keyCode,
+							KeyEvent event) {
+						
+						UploadMessage.set_upload_message(null);
+						dialog.dismiss();
+						return true;
+					}
+					
+				}
+		);
 		mBuilder.setItems(
 		func_items, 
 		new OnClickListener()
@@ -142,6 +157,7 @@ public class MyWebChromeClient extends WebChromeClient{
 	public void openFileChooser(ValueCallback<Uri> uploadMsg)
 	{
 		mUploadMessage = uploadMsg;
+		UploadMessage.set_upload_uri(mUploadMessage);
 		mBuilder.create().show();
 	}
 }

@@ -3,6 +3,7 @@ package com.android.task.video;
 import java.io.File;
 
 import com.android.task.R;
+import com.android.task.tools.UploadMessage;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
@@ -93,5 +95,9 @@ public class VideoPreviewer extends Activity {
  		vid_view.start();
  		//vid_view.requestFocus();
  		
+	}
+	public boolean onKeyDown(int keyCode, KeyEvent event) {   
+		UploadMessage.set_upload_message(null);
+	return super.onKeyDown(keyCode, event);
 	}
 }
