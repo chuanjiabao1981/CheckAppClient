@@ -1,6 +1,5 @@
 package com.android.task.web;
 
-import com.android.task.main.WebMainActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
