@@ -49,7 +49,6 @@ public class SysUpdate
 	        urlConnection.setDoOutput(true);
 	        urlConnection.connect();
 	        File SDCardRoot = Environment.getExternalStorageDirectory();
-	        //TODO::下载两次看看是什么效果
 	        File file = new File(SDCardRoot,LOCAL_PACKAGE_FILE);
 	        FileOutputStream fileOutput = new FileOutputStream(file);
 	        InputStream inputStream = urlConnection.getInputStream();
@@ -69,7 +68,6 @@ public class SysUpdate
 
 //    			Toast.makeText(this.a, String.valueOf(downloadedSize/(float)totalSize * 100) + "%", Toast.LENGTH_SHORT).show();
 	        }
-        //close the output stream when done
         fileOutput.close();
 
 		} catch (MalformedURLException e) {
