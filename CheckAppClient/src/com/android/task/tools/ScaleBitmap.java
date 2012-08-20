@@ -3,12 +3,15 @@ package com.android.task.tools;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.android.task.main.WebMainActivity;
+
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ScaleBitmap {
 	private Uri mSrcImageUri = null;
@@ -29,8 +32,12 @@ public class ScaleBitmap {
 		if (this.mSrcBitmap == null){
 			return null;
 		}
+		try {
 		this.mDesBitmap = Bitmap.createScaledBitmap(this.mSrcBitmap,SCALE_WIDTH,SCALE_HEIGHT,true);
-//		Toast.makeText(this.mActivity, "得到了"+String.valueOf(this.mDesBitmap.getHeight()), Toast.LENGTH_LONG).show();
+		}catch(Exception e){
+			Toast.makeText(this.mActivity, "缩放失败!!!",Toast.LENGTH_SHORT).show();
+			return null;
+		}
 //    	Toast.makeText(this.mActivity, "得到了"+String.valueOf(this.mDesBitmap.getWidth()), Toast.LENGTH_LONG).show();
 //    	Toast.makeText(this.mActivity, "得到了"+String.valueOf(this.mDesBitmap.getDensity()), Toast.LENGTH_LONG).show();
 		return this.mDesBitmap;
@@ -55,6 +62,17 @@ public class ScaleBitmap {
 			e.printStackTrace();
 		}
 
+	}
+	public void release()
+	{
+		if (mSrcBitmap != null  && !mSrcBitmap.isRecycled()){
+
+			this.mSrcBitmap.recycle();
+		}
+		if (mDesBitmap !=null && !mDesBitmap.isRecycled()){
+
+			this.mDesBitmap.recycle();
+		}
 	}
 
 }

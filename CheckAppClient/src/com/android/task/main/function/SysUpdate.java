@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.android.task.tools.EquipmentId;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,22 +21,27 @@ public class SysUpdate
 {
 	private final String TAG			 				= SysUpdate.class.getName();
 	private final String LOCAL_PACKAGE_FILE				= ".checkapp.apk";
-	private final String REMOTE_23_PACKAGE_FILE			= "/check23.apk";
+	private final String REMOTE_PACKAGE_FILE			= "check.apk";
 	private Activity     a					= null;
 	private UrlConfigure mUrlConfigure 		= null;
+	private EquipmentId	mEquipmentId		= null;
 	
 	public SysUpdate(Activity a,UrlConfigure u)
 	{
 		this.mUrlConfigure			= 		u;
 		this.a						=       a;
+		this.mEquipmentId			=       new EquipmentId(a);
 	}
 	
 	public void update()
 	{
 		if (this.downloadNewPackage()){
 			this.installPackage();
+			Toast.makeText(this.a, "安装新版本成功！", Toast.LENGTH_SHORT).show();
+			return;
 		}
-		Toast.makeText(this.a, "安装新版本成功！", Toast.LENGTH_LONG).show();
+		Toast.makeText(this.a, "安装新版本失败！", Toast.LENGTH_SHORT).show();
+
 	}
 	
 	private boolean downloadNewPackage() 
@@ -91,7 +98,8 @@ public class SysUpdate
 	}
 	private String getNewPackageUrl()
 	{
-		//TODO::判断版本
-		return "http://"+mUrlConfigure.getHost() + REMOTE_23_PACKAGE_FILE;
+		return "http://"+mUrlConfigure.getHost() 			+ "/" +
+				this.mEquipmentId.getAndroidVersion() 		+ "/" +
+				REMOTE_PACKAGE_FILE;
 	}
 }

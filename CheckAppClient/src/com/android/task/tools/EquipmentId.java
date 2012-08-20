@@ -1,5 +1,7 @@
 package com.android.task.tools;
 
+import com.android.task.main.WebMainActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.telephony.TelephonyManager;
@@ -7,8 +9,11 @@ import android.util.Log;
 
 public class EquipmentId 
 {
+	//imeistring:imsistring:version:andriod[24]
 	private final String TAG 					= EquipmentId.class.getName();
-
+	private final String DefaultVersion			= "23";
+	private final String VERSION_PREFIX			=  "android";
+	private final String SPLITOR				= "@";					
 	private TelephonyManager    mTelephonyManager;
 	private Activity ma;
 	public EquipmentId(Activity a)
@@ -28,11 +33,25 @@ public class EquipmentId
 		String imsistring = this.mTelephonyManager.getSubscriberId();
 		if (imsistring == null)
 			imsistring = "0";
-		return imeistring +"-" +imsistring;
-		//return imeistring==null?"0":imeistring +"-" +imsistring==null?"0":imsistring;
+		return imeistring 						+SPLITOR +
+			   imsistring 						+SPLITOR +
+			   WebMainActivity.VERSION         	+SPLITOR +
+			   getAndroidVersion();
 	}
+	
 	private void init()
 	{
 		this.mTelephonyManager =  ( TelephonyManager )this.ma.getSystemService(Context.TELEPHONY_SERVICE );
+	}
+	
+	public String getAndroidVersion()
+	{
+		String v = android.os.Build.VERSION.RELEASE.replaceAll(".", "");
+		if (v.length() >=2){
+			return VERSION_PREFIX+v.substring(0, 1);
+		}else{
+			return VERSION_PREFIX+DefaultVersion;
+		}
+		
 	}
 }

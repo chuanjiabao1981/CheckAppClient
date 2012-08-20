@@ -5,6 +5,7 @@ import com.android.task.main.function.CheckAppClientExit;
 import com.android.task.main.function.MainPage;
 import com.android.task.main.function.SysSetting;
 import com.android.task.main.function.UrlConfigure;
+import com.android.task.tools.CustomExceptionHandler;
 import com.android.task.tools.InsertFileToMediaStore;
 import com.android.task.tools.ScaleBitmap;
 import com.android.task.tools.UploadMessage;
@@ -27,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class WebMainActivity extends Activity {
+	
+	public  static final String         VERSION		  = "0.10";
 	public  ProgressDialog ProgressDialog = null;
 
 	private final boolean	   APP_DEBUG    = false;
@@ -39,8 +42,10 @@ public class WebMainActivity extends Activity {
 	private SysSetting		   mSysSetting;
 	private EquipmentId		   mEquipmentId;
 	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
         super.onCreate(savedInstanceState);
         this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
         
@@ -73,7 +78,6 @@ public class WebMainActivity extends Activity {
         mExit	= new CheckAppClientExit(this);
         mMpage  = new MainPage(this);
 
-        
         TextView menu_text = (TextView)findViewById(R.id.main_menu_text);
         menu_text.setOnClickListener(new View.OnClickListener() {
 			
@@ -107,6 +111,7 @@ public class WebMainActivity extends Activity {
     }
     protected void onActivityResult(int requestCode, int resultCode,  Intent intent) 
     {
+
     	if(requestCode== MyWebChromeClient.FILECHOOSER_IMAG_RESULTCODE)  
     	{  
 
@@ -116,6 +121,7 @@ public class WebMainActivity extends Activity {
     		InsertFileToMediaStore insert_file = new InsertFileToMediaStore(this,bit_map,"image/jpeg");
 			Uri uri = insert_file.insert();
     		UploadMessage.set_upload_message(uri);
+    		scale_bitmap.release();
     	}else if (requestCode == MyWebChromeClient.FILECHOOSER_VIDEO_RESULTCODE){
     		Uri result = intent == null || resultCode != RESULT_OK ? null  : intent.getData();  
     		UploadMessage.set_upload_message(result);
@@ -124,11 +130,26 @@ public class WebMainActivity extends Activity {
     			 UploadMessage.set_upload_message(null);
     		 }else{
     			 if (UploadMessage.get_file_uri() != null){
-    				 	ScaleBitmap scale_bitmap = new ScaleBitmap(this,UploadMessage.get_file_uri());
-    		    		Bitmap      bit_map      = scale_bitmap.scale();
-    		    		InsertFileToMediaStore insert_file = new InsertFileToMediaStore(this,bit_map,"image/jpeg");
-    					Uri uri = insert_file.insert();
-    		    		UploadMessage.set_upload_message(uri);
+    				 	try {
+    				 		ScaleBitmap scale_bitmap = new ScaleBitmap(this,UploadMessage.get_file_uri());
+
+    				 		Bitmap      bit_map      = scale_bitmap.scale();
+
+    				 		if (bit_map == null){
+    			    			 UploadMessage.set_upload_message(null);
+
+    				 		}else{
+    				 			InsertFileToMediaStore insert_file = new InsertFileToMediaStore(this,bit_map,"image/jpeg");
+    				 			Uri uri = insert_file.insert();
+    				 			UploadMessage.set_upload_message(uri);
+
+    				 		}
+    			    		scale_bitmap.release();
+    				 	}catch (Exception e)
+    				 	{
+    				        Toast.makeText(WebMainActivity.this, "插入文件出错！", Toast.LENGTH_LONG).show();
+    		    			 UploadMessage.set_upload_message(null);
+    				 	}
     			 }else{
     				 UploadMessage.set_upload_message();
     			 }
@@ -137,7 +158,7 @@ public class WebMainActivity extends Activity {
     		if (resultCode != RESULT_OK  ){
    			 	UploadMessage.set_upload_message(null);
    		 	}else{
-   		 		UploadMessage.set_upload_message();
+   		 		UploadMessage.set_upload_message(intent.getData());
    		 	}
     	}
 

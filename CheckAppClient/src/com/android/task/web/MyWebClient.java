@@ -40,17 +40,17 @@ public class MyWebClient extends WebViewClient{
 	public void onPageStarted(WebView view, String url, Bitmap favicon) 
 	{
 		//mLoadingBar=ProgressDialog.show(this.a, null, "正在加载…");
-		Toast.makeText(this.a, "访问服务器...", Toast.LENGTH_LONG).show();
+		Toast.makeText(this.a, "访问服务器...", Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
 	public void onPageFinished(WebView view, String url) {
-	Toast.makeText(this.a, "服务正常返回", Toast.LENGTH_LONG).show();
+	Toast.makeText(this.a, "服务正常返回", Toast.LENGTH_SHORT).show();
 		super.onPageFinished(view, url);
 	}
 	@Override
     public void onReceivedError(WebView view, int errorCode,String description, String failingUrl) {
-        Toast.makeText(this.a, "网络错误", Toast.LENGTH_LONG).show();
+        Toast.makeText(this.a, "网络错误", Toast.LENGTH_SHORT).show();
         final AlertDialog alertDialog = new AlertDialog.Builder(this.a).create();
         alertDialog.setTitle("发生错误");
         alertDialog.setMessage(description);

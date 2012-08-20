@@ -91,7 +91,7 @@ public class InsertFileToMediaStore {
 				os2.close();
 			}else{
 				Log.e(TAG,"插入文件到media 中发生错误");
-				Toast.makeText(this.a, "插入数据时发生错误，请重试！", Toast.LENGTH_LONG).show();
+				Toast.makeText(this.a, "插入数据时发生错误，请重试！", Toast.LENGTH_SHORT).show();
 				return null;
 			}
 				

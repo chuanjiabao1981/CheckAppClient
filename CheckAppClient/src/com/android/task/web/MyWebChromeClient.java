@@ -22,6 +22,7 @@ import android.view.KeyEvent;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 
 public class MyWebChromeClient extends WebChromeClient{
@@ -82,36 +83,45 @@ public class MyWebChromeClient extends WebChromeClient{
 						*/
 						
 				        String fileName = "temp.jpg";  
+
 				        ContentValues values = new ContentValues();  
-				        values.put(MediaStore.Images.Media.TITLE, fileName);  
+
+				        values.put(MediaStore.Images.Media.TITLE, fileName); 
+
 				        Uri mCapturedImageURI = MyWebChromeClient.this.mActivity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);  
 
 				        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);  
+
 				        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);  
+
 				        MyWebChromeClient.this.mActivity.startActivityForResult(intent, CAPTURE_PICTURE_INTENT);
+
 						UploadMessage.set_upload_uri(mUploadMessage,mCapturedImageURI);
+
 
 					}else if (i == 1){
 						Log.i(TAG,"…„œÒ");
-						
+						/*
 						Intent intent = new Intent(MyWebChromeClient.this.mActivity, VideoRecorder.class);
 						UploadMessage.set_upload_uri(mUploadMessage);
 						MyWebChromeClient.this.mActivity.startActivity(intent);
+						*/
+						
 						/*
 						String fileName ="temp.3gp";
 						ContentValues values = new ContentValues();  
 						values.put(MediaStore.Video.Media.TITLE, fileName); 
 						Uri cameraVideoURI = MyWebChromeClient.this.mActivity.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);  
-
+						*/
 
 				        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE); 
-				        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraVideoURI);  
-//						intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-						intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 600000);   
-						intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
+//				        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraVideoURI);  
+						intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+//						intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 10);   
+						intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 8);
 						MyWebChromeClient.this.mActivity.startActivityForResult(intent, CAPTURE_VIDEO_INTENT);
-						UploadMessage.set_upload_uri(mUploadMessage,cameraVideoURI);
-				        */
+						UploadMessage.set_upload_uri(mUploadMessage);
+
 				        
 					}else if (i == 2) {
 						Log.i(TAG,"—°‘Ò’’∆¨");
