@@ -27,9 +27,15 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/* Change Log */
+/* 0.11 
+ * 	   Bug Fix:
+ * 	   1. 读取bitmap超过虚拟机内存限制的bug。
+ * 	   2. 支持用后退键，取消上传数据或者网页加载
+ */
 public class WebMainActivity extends Activity {
 	
-	public  static final String         VERSION		  = "0.10";
+	public  static final String         VERSION		  = "0.11";
 	public  ProgressDialog ProgressDialog = null;
 
 	private final boolean	   APP_DEBUG    = false;
@@ -43,7 +49,8 @@ public class WebMainActivity extends Activity {
 	private EquipmentId		   mEquipmentId;
 	
 	
-    @Override
+    @SuppressWarnings("static-access")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
     	Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
         super.onCreate(savedInstanceState);
@@ -54,8 +61,9 @@ public class WebMainActivity extends Activity {
         this.setProgressBarVisibility(true);
         ProgressDialog = new ProgressDialog(this);
     	
-        ProgressDialog.setCancelable(false);
+        ProgressDialog.setCancelable(true);
         ProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        ProgressDialog.setTitle("数据传输中...");
         mEquipmentId = new EquipmentId(this);
 
         setContentView(R.layout.web_main);
@@ -121,6 +129,7 @@ public class WebMainActivity extends Activity {
     		InsertFileToMediaStore insert_file = new InsertFileToMediaStore(this,bit_map,"image/jpeg");
 			Uri uri = insert_file.insert();
     		UploadMessage.set_upload_message(uri);
+    		bit_map = null;
     		scale_bitmap.release();
     	}else if (requestCode == MyWebChromeClient.FILECHOOSER_VIDEO_RESULTCODE){
     		Uri result = intent == null || resultCode != RESULT_OK ? null  : intent.getData();  
@@ -144,6 +153,7 @@ public class WebMainActivity extends Activity {
     				 			UploadMessage.set_upload_message(uri);
 
     				 		}
+    				 		bit_map = null;
     			    		scale_bitmap.release();
     				 	}catch (Exception e)
     				 	{

@@ -156,8 +156,8 @@ public class MyWebChromeClient extends WebChromeClient{
 	public void onProgressChanged(WebView view, int progress)   
     {
 		this.mActivity.ProgressDialog.show();
+		
 		this.mActivity.ProgressDialog.setProgress(0);
-		//this.mActivity.setProgress(progress * 100);
 		this.mActivity.ProgressDialog.incrementProgressBy(progress);
 		//this.mActivity.ProgressDialog.i
 		if(progress == 100 && this.mActivity.ProgressDialog.isShowing())
