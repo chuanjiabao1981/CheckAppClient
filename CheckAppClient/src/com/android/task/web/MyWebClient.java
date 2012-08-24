@@ -40,12 +40,12 @@ public class MyWebClient extends WebViewClient{
 	public void onPageStarted(WebView view, String url, Bitmap favicon) 
 	{
 		//mLoadingBar=ProgressDialog.show(this.a, null, "正在加载…");
-		Toast.makeText(this.a, "访问服务器...", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this.a, "访问服务器...", 1).show();
 	}
 	
 	@Override
 	public void onPageFinished(WebView view, String url) {
-	Toast.makeText(this.a, "服务正常返回", Toast.LENGTH_SHORT).show();
+	Toast.makeText(this.a, "服务正常返回", 1).show();
 		super.onPageFinished(view, url);
 	}
 	@Override

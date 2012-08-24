@@ -32,10 +32,13 @@ import android.widget.Toast;
  * 	   Bug Fix:
  * 	   1. 读取bitmap超过虚拟机内存限制的bug。
  * 	   2. 支持用后退键，取消上传数据或者网页加载
+ * 0.12
+ * 	   Feature:
+ * 	   1. web不记录密码
  */
 public class WebMainActivity extends Activity {
 	
-	public  static final String         VERSION		  = "0.11";
+	public  static final String         VERSION		  = "0.12";
 	public  ProgressDialog ProgressDialog = null;
 
 	private final boolean	   APP_DEBUG    = false;
@@ -72,6 +75,7 @@ public class WebMainActivity extends Activity {
         mWebView.setFocusable(true);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setUserAgentString(mEquipmentId.getId());
+        mWebView.getSettings().setSavePassword(false);
         
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.setWebChromeClient(new MyWebChromeClient(this));
